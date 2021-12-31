@@ -6,7 +6,7 @@ from pyrogram.types import (
 )
 
 from core.bot import Bot
-from database.lang_utils import get_message as gm
+from database.lang_utils import gm
 from functions.markup_button import start_markup
 from functions.youtube_utils import get_yt_details, download_yt_thumbnails
 
@@ -25,8 +25,8 @@ async def pm_start(_, message: Message):
             return await bot.send_message(
                 chat_id,
                 "pm_greet",
-                format_key=str(mention),
-                markup=start_markup(chat_id, bot_username),
+                format_key=[str(mention)],
+                markup=await start_markup(chat_id, bot_username),
                 delete=0
             )
         if len(message.command) >= 2:
@@ -35,13 +35,13 @@ async def pm_start(_, message: Message):
                 link = query.split("ytinfo_")[1]
                 details = get_yt_details(link)
                 thumb_url = details["thumbnail"]
-                thumb_file = download_yt_thumbnails(thumb_url, user_id)
+                thumb_file = await download_yt_thumbnails(thumb_url, user_id)
                 result_text = f"""
-{gm(chat_id, 'track_info')}
-📌 **{gm(chat_id, 'yt_title')}**: {details['title']}
-🕰 **{gm(chat_id, 'duration')}**: {details['duration']}
-👍 **{gm(chat_id, 'yt_likes')}**: {details['likes']}
-⭐ **{gm(chat_id, 'yt_rating')}**: {details['rating']}
+{await gm(chat_id, 'track_info')}
+📌 **{await gm(chat_id, 'yt_title')}**: {details['title']}
+🕰 **{await gm(chat_id, 'duration')}**: {details['duration']}
+👍 **{await gm(chat_id, 'yt_likes')}**: {details['likes']}
+⭐ **{await gm(chat_id, 'yt_rating')}**: {details['rating']}
 """
                 return await message.reply_photo(
                     thumb_file,
@@ -50,13 +50,13 @@ async def pm_start(_, message: Message):
                         [
                             [
                                 InlineKeyboardButton(
-                                    f"🎥 {gm(chat_id, 'watch_on_yt')}",
+                                    f"🎥 {await gm(chat_id, 'watch_on_yt')}",
                                     url=f"https://www.youtube.com/watch?v={details['link']}",
                                 )
                             ],
                             [
                                 InlineKeyboardButton(
-                                    f"🗑 {gm(chat_id, 'close_btn_name')}",
+                                    f"🗑 {await gm(chat_id, 'close_btn_name')}",
                                     callback_data="close",
                                 )
                             ],
@@ -65,12 +65,12 @@ async def pm_start(_, message: Message):
                 )
             if query.startswith("help"):
                 return await message.reply(
-                    gm(chat_id, "helpmusic"),
+                    await gm(chat_id, "helpmusic"),
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
                                 InlineKeyboardButton(
-                                    f"{gm(chat_id, 'commands')}",
+                                    f"{await gm(chat_id, 'commands')}",
                                     url="https://telegra.ph/The-Bot-Command-11-14",
                                 )
                             ]
@@ -80,12 +80,12 @@ async def pm_start(_, message: Message):
                 )
     if message.chat.type in ["group", "supergroup"]:
         await message.reply(
-            gm(chat_id, "chat_greet").format(mention, bot_name),
+            await gm(chat_id, "chat_greet", [mention, bot_name]),
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
-                            gm(message.chat.id, "group_buttn"),
+                            await gm(message.chat.id, "group_buttn"),
                             url=f"https://t.me/{bot_username}?start=help",
                         )
                     ]

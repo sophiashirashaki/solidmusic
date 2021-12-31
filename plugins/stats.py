@@ -10,7 +10,7 @@ from sys import version
 from pyrogram import __version__ as pyrogram_version
 from pytgcalls.__version__ import __version__ as pytgcalls_version
 from database.chat_database import ChatDB
-from database.lang_utils import get_message as gm
+from database.lang_utils import gm
 from functions.stats_utils import humanbytes
 
 
@@ -28,7 +28,7 @@ async def get_stats_(client: Client, m: Message):
     system_platform = platform.system()
     architecture_machine = platform.machine()
     chat_id = m.chat.id
-    text = gm(chat_id, "stats_text").format(
+    text = await gm(chat_id, "stats_text", [
         bot_name,
         bot_version,
         pytgcalls_version,
@@ -43,7 +43,7 @@ async def get_stats_(client: Client, m: Message):
         total,
         architecture_machine,
         system_platform
-    )
+    ])
     await m.reply(text, disable_web_page_preview=True)
 
 

@@ -14,7 +14,7 @@ class InitDB:
             create table if not exists chat_db
             (
                 owner_id integer,
-                chat_id integer6,
+                chat_id integer,
                 lang text,
                 quality text,
                 admin_only boolean,

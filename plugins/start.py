@@ -6,6 +6,7 @@ from pyrogram.types import (
 )
 
 from core.bot import Bot
+from database.db import dbs
 from database.lang_utils import gm
 from functions.markup_button import start_markup
 from functions.youtube_utils import get_yt_details, download_yt_thumbnails
@@ -21,6 +22,11 @@ async def pm_start(_, message: Message):
     mention = message.from_user.mention
     user_id = message.from_user.id
     if message.chat.type == "private":
+        try:
+            lang = message.from_user.language_code
+        except AttributeError:
+            lang = "en"
+        await dbs.add_chat(user_id, lang)
         if len(message.command) == 1:
             return await bot.send_message(
                 chat_id,

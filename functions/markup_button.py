@@ -42,7 +42,7 @@ async def start_markup(chat_id: int, bot_username: str):
             [
                 InlineKeyboardButton(await gm(chat_id, "helpbutton"), callback_data="cbhelp"),
                 InlineKeyboardButton(
-                    await gm(chat_id, "maintainer"), url="https://t.me/talktoabdul_bot"
+                    await gm(chat_id, "maintainer"), url=f"https://t.me/{config.OWNER_USERNAME}"
                 ),
             ],
             [

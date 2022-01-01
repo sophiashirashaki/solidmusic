@@ -179,7 +179,7 @@ async def cb_help_plugins_(_, cb: CallbackQuery):
     for key, value in items.items():
         result += f"/{key}:    {await gm(chat_id, value)}\n"
     return await cb.edit_message_text(
-        await gm(chat_id, "help_for", [format(module_name, result)]),
+        await gm(chat_id, "help_for", [module_name, result]),
         reply_markup=InlineKeyboardMarkup(
             [
                 [

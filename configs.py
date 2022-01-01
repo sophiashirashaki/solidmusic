@@ -14,6 +14,7 @@ class Config:
     CHANNEL_LINK = getenv("CHANNEL_LINK", "https://t.me/solidprojects")
     GROUP_LINK = getenv("GROUP_LINK", "https://t.me/solidprojects_chat")
     AUTO_LEAVE = int(getenv("AUTO_LEAVE", "15"))
+    OWNER_USERNAME = getenv("OWNER_USERNAME", "shohih_abdul2")
 
 
 config = Config()
